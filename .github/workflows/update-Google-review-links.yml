@@ -18,11 +18,11 @@ jobs:
         env:
           COMMENT_UPDATE: false  # Initialize URL_MATCH environment variable
         run: |
-          echo ${{ env.COMMENT_UPDATE }}
+          echo Comment update environment variable (after setting in environment) is ${{ env.COMMENT_UPDATE }}
 
           # Initialize URL_MATCH environment variable
           echo "COMMENT_UPDATE=false" >> $GITHUB_ENV
-          echo ${{ env.COMMENT_UPDATE }}
+          echo Comment update environment variable (after setting in runtime) is ${{ env.COMMENT_UPDATE }}
 
           # Define the regular expression to capture the old URL
           pattern='https:\/\/play\.google\.com\/apps\/publish\?account=8008695526664634386#ReviewDetailsPlace:p=de\.danoeh\.antennapod&reviewid='
@@ -30,7 +30,12 @@ jobs:
           # Define the new URL
           replacement="https://play.google.com/console/u/0/developers/8008695526664634386/app/4974638472012894302/user-feedback/review-details?reviewId="
 
+          echo Now test of pattern URL exists in comment-body.md
+          echo comment-body.md contains
+          cat comment-body.md
+
           if sed -n "!$pattern!p" "comment-body.md"; then
+              echo Pattern URL found!
 
               # Set COMMENT_UPDATE to true if a match is found and manipulated & store as environment variable
               COMMENT_UPDATE=true
