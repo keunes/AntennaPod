@@ -24,14 +24,14 @@ jobs:
           # Define the new URL
           replacement="https://play.google.com/console/u/0/developers/8008695526664634386/app/4974638472012894302/user-feedback/review-details?reviewId="
 
-          if sed -n "|$pattern|p" "comment-body.md"; then
+          if sed -n "!$pattern!p" "comment-body.md"; then
 
               # Set COMMENT_UPDATE to true if a match is found and manipulated & store as environment variable
               COMMENT_UPDATE=true
               echo "COMMENT_UPDATE=$COMMENT_UPDATE" >> $GITHUB_ENV
 
               # Replace URL occurrences
-              sed -i "s|$pattern|$replacement|g" "comment-body.md"
+              sed -i "s!$pattern!$replacement!g" "comment-body.md"
           fi
 
       - name: Update comment if URL match found
