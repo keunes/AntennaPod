@@ -18,10 +18,8 @@ jobs:
         env:
           COMMENT_UPDATE: false  # Initialize URL_MATCH environment variable
         run: |
-          # Define the old URL
+          # Define old & new URLs
           pattern="https://play.google.com/apps/publish?account=8008695526664634386#ReviewDetailsPlace:p=de.danoeh.antennapod&reviewid="
-
-          # Define the new URL
           replacement="https://play.google.com/console/u/0/developers/8008695526664634386/app/4974638472012894302/user-feedback/review-details?reviewId="
 
           if grep -q "${pattern}" "comment-body.md"; then
@@ -35,7 +33,7 @@ jobs:
              exit 0
           fi
       - name: Update comment if URL match found
-        if: ${{ env.COMMENT_UPDATE == 'true' }}
+        if: ${{ env.COMMENT_UPDATE == 'true' }} && ${{ github.event.comment.author_association == 'keunes' }}
         uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ github.event.comment.id }}
