@@ -35,9 +35,10 @@ jobs:
           fi
 
       - name: Update comment if URL match found
-        if: ${{ env.COMMENT_UPDATE }} == 'true'
+        if: ${{ env.COMMENT_UPDATE == 'true' }}
         uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ github.event.comment.id }}
+          edit-mode: replace
           body-path: 'manipulated_body.md'
           token: ${{ secrets.GITHUB_TOKEN }}
