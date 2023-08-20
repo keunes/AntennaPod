@@ -35,7 +35,7 @@ jobs:
           cat comment-body.md
           echo "Now start the real test with the if statement"
 
-          if grep -q "$pattern" "comment-body.md"; then
+          if grep -q "${pattern}" "comment-body.md"; then
               echo Pattern URL found!
 
               # Set COMMENT_UPDATE to true if a match is found and manipulated & store as environment variable
