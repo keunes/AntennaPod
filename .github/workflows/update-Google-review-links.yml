@@ -9,14 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Set up comment file
-        id: setup-comment-file
+      - name: Save comment in file
         run: |
           echo "${{ github.event.comment.body }}" > comment-body.md
-      - name: Manipulate comment body
-        id: manipulate-comment
+      - name: Manipulate comment file
         env:
-          COMMENT_UPDATE: false  # Initialize URL_MATCH environment variable
+          COMMENT_UPDATE: false
         run: |
           # Define old & new URLs
           pattern="https://play.google.com/apps/publish?account=8008695526664634386#ReviewDetailsPlace:p=de.danoeh.antennapod&reviewid="
@@ -24,16 +22,14 @@ jobs:
 
           if grep -q "${pattern}" "comment-body.md"; then
               echo "Pattern URL found. Updating comment."
-              # Set COMMENT_UPDATE to true if a match is found and manipulated & store as environment variable
               echo "COMMENT_UPDATE=true" >> $GITHUB_ENV
-              # Replace URL occurrences
               sed -i "s!$pattern!$replacement!g" "comment-body.md"
           else
              echo "No action needed."
              exit 0
           fi
-      - name: Update comment if URL match found
-        if: ${{ env.COMMENT_UPDATE == 'true' }} && ${{ github.event.comment.author_association == 'keunes' }}
+      - name: Upload manipulated comment
+        if: ${{ env.COMMENT_UPDATE == 'true' }}
         uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ github.event.comment.id }}
