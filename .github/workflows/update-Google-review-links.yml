@@ -27,10 +27,7 @@ jobs:
           if grep -q "${pattern}" "comment-body.md"; then
               echo "Pattern URL found. Updating comment."
               # Set COMMENT_UPDATE to true if a match is found and manipulated & store as environment variable
-              COMMENT_UPDATE=true
-              echo "COMMENT_UPDATE=$COMMENT_UPDATE" >> $GITHUB_ENV
-              echo ${COMMENT_UPDATE}
-              echo ${{ env.COMMENT_UPDATE }}
+              echo "COMMENT_UPDATE=true" >> $GITHUB_ENV
               # Replace URL occurrences
               sed -i "s!$pattern!$replacement!g" "comment-body.md"
           else
