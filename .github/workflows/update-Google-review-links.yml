@@ -1,0 +1,54 @@
+name: Replace URLs in Comment
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  replace-urls:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Manipulate comment body
+        id: manipulate-comment
+        env:
+          BODY: ${{ github.event.comment.body }}
+          URL_MATCH: false  # Initialize URL_MATCH environment variable
+        run: |
+          # Define the regular expression to capture the code (nnnn)
+          regex='https:\/\/play\.google\.com\/apps\/publish\?account=8008695526664634386#ReviewDetailsPlace:p=de\.danoeh\.antennapod&reviewid=[a-z\d-]+'
+          
+          # Initialize manipulated body
+          manipulated_body="$BODY"
+          
+          # Find all matches in the comment body
+          while [[ "$manipulated_body" =~ $regex ]]; do
+            matched_url="${BASH_REMATCH[0]}"
+            
+            # Extract the code from the matched URL
+            code="${BASH_REMATCH[1]}"
+            
+            # Construct the new URL
+            new_url="https://play.google.com/console/u/0/developers/8008695526664634386/app/4974638472012894302/user-feedback/review-details?reviewId=$code"
+            
+            # Replace the old URL with the new URL in the comment body
+            manipulated_body="${manipulated_body//$matched_url/$new_url}"
+            
+            # Set URL_MATCH to true if a match is found and manipulated
+            URL_MATCH=true
+          done
+          
+          # Store the manipulated body as an environment variable for further use
+          echo "MANIPULATED_BODY=$manipulated_body" >> $GITHUB_ENV
+          echo "URL_MATCH=$URL_MATCH" >> $GITHUB_ENV
+          
+          # Display the manipulated comment body
+          echo "Manipulated comment body: $manipulated_body"
+      
+      - name: Update comment if URL match found
+        if: steps.manipulate-comment.outputs.URL_MATCH == 'true'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          body: ${{ steps.manipulate-comment.outputs.MANIPULATED_BODY }}
+          token: ${{ secrets.GITHUB_TOKEN }}
