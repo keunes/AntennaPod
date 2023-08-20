@@ -40,5 +40,5 @@ jobs:
         with:
           comment-id: ${{ github.event.comment.id }}
           edit-mode: replace
-          body-path: 'manipulated_body.md'
+          body-path: 'comment-body.md'
           token: ${{ secrets.GITHUB_TOKEN }}
