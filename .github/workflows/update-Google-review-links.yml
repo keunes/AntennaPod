@@ -40,6 +40,9 @@ jobs:
               echo ${{ env.COMMENT_UPDATE }}
               # Replace URL occurrences
               sed -i "s!$pattern!$replacement!g" "comment-body.md"
+          else
+             echo "No action needed."
+             exit 0  # Exit with success status
           fi
       - name: Update comment if URL match found
         if: ${{ env.COMMENT_UPDATE == 'true' }}
