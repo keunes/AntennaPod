@@ -35,7 +35,7 @@ jobs:
           fi
 
       - name: Update comment if URL match found
-        if: steps.manipulate-comment.outputs.COMMENT_UPDATE == 'true'
+        if: "${{ env.COMMENT_UPDATE }}" == "true"
         uses: peter-evans/create-or-update-comment@v3
         with:
           comment-id: ${{ github.event.comment.id }}
