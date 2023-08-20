@@ -27,8 +27,7 @@ jobs:
               echo "Comment update environment variable (after setting to true) is ${{ env.COMMENT_UPDATE }}"
 
               # Replace URL occurrences
-              sed -i 's!${pattern}!${replacement}!g" "comment-body.md"
-sed -i "s!https:\/\/play.google.com\/apps\/publish?account=8008695526664634386#ReviewDetailsPlace:p=de.danoeh.antennapod\&reviewid=!https:\/\/play.google.com\/console\/u\/0\/developers\/8008695526664634386\/app\/4974638472012894302\/user-feedback\/review-details?reviewId=!g' "comment-body.md"
+              sed -i 's!https:\/\/play.google.com\/apps\/publish?account=8008695526664634386#ReviewDetailsPlace:p=de.danoeh.antennapod\&reviewid=!https:\/\/play.google.com\/console\/u\/0\/developers\/8008695526664634386\/app\/4974638472012894302\/user-feedback\/review-details?reviewId=!g' "comment-body.md"
           fi
 
       - name: Update comment if URL match found
