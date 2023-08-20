@@ -34,6 +34,7 @@ jobs:
           echo "Comment-body.md contains"
           cat comment-body.md
           echo "Now start the real test with the if statement"
+          grep "${pattern}" "comment-body.md"
 
           if grep -q "${pattern}" "comment-body.md"; then
               echo Pattern URL found!
