@@ -43,7 +43,7 @@ jobs:
               # Set COMMENT_UPDATE to true if a match is found and manipulated & store as environment variable
               COMMENT_UPDATE=true
               echo "COMMENT_UPDATE=$COMMENT_UPDATE" >> $GITHUB_ENV
-              echo ${{ env.COMMENT_UPDATE }}
+              echo "Comment update environment variable (after setting to true) is ${{ env.COMMENT_UPDATE }}"
 
               # Replace URL occurrences
               sed -i "s!$pattern!$replacement!g" "comment-body.md"
