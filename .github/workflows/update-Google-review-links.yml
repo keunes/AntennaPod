@@ -18,19 +18,29 @@ jobs:
         env:
           COMMENT_UPDATE: false  # Initialize URL_MATCH environment variable
         run: |
-              if grep -q "https://play.google.com/apps/publish?account=8008695526664634386#ReviewDetailsPlace:p=de.danoeh.antennapod&reviewid=" "comment-body.md"; then
+          echo "Comment update environment variable (after setting in environment) is ${{ env.COMMENT_UPDATE }}"
+          # Initialize URL_MATCH environment variable
+          echo "COMMENT_UPDATE=false" >> $GITHUB_ENV
+          echo "Comment update environment variable (after setting in runtime) is ${{ env.COMMENT_UPDATE }}"
+          # Define the regular expression to capture the old URL
+          pattern="https:\/\/play\.google\.com\/apps\/publish\?account=8008695526664634386#ReviewDetailsPlace:p=de\.danoeh\.antennapod&reviewid="
+          pattern="https://play.google.com/apps/publish?account=8008695526664634386#ReviewDetailsPlace:p=de.danoeh.antennapod&reviewid="
+          # Define the new URL
+          replacement="https://play.google.com/console/u/0/developers/8008695526664634386/app/4974638472012894302/user-feedback/review-details?reviewId="
+          echo "Now test of pattern URL exists in comment-body.md"
+          echo "Comment-body.md contains"
+          cat comment-body.md
+          echo "Now start the real test with the if statement"
+          grep "${pattern}" "comment-body.md"
+          if grep -q "${pattern}" "comment-body.md"; then
               echo Pattern URL found!
-
               # Set COMMENT_UPDATE to true if a match is found and manipulated & store as environment variable
               COMMENT_UPDATE=true
               echo "COMMENT_UPDATE=$COMMENT_UPDATE" >> $GITHUB_ENV
-              echo "Comment update environment variable (after setting to true) is ${{ env.COMMENT_UPDATE }}"
-
+              echo ${{ env.COMMENT_UPDATE }}
               # Replace URL occurrences
-              sed -i 's!${pattern}!${replacement}!g" "comment-body.md"
-sed -i "s!https:\/\/play.google.com\/apps\/publish?account=8008695526664634386#ReviewDetailsPlace:p=de.danoeh.antennapod\&reviewid=!https:\/\/play.google.com\/console\/u\/0\/developers\/8008695526664634386\/app\/4974638472012894302\/user-feedback\/review-details?reviewId=!g' "comment-body.md"
+              sed -i "s!$pattern!$replacement!g" "comment-body.md"
           fi
-
       - name: Update comment if URL match found
         if: ${{ env.COMMENT_UPDATE == 'true' }}
         uses: peter-evans/create-or-update-comment@v3
