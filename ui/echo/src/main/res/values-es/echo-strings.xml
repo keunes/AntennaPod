@@ -10,6 +10,7 @@
     <string name="echo_hours_this_year">Este año has reproducido</string>
     <plurals name="echo_hours_podcasts">
         <item quantity="one">hora de episodios\nde %1$d podcast</item>
+        <item quantity="many">hora de episodios\nde %1$d podcast</item>
         <item quantity="other">horas de episodios\nde %1$d podcasts diferentes</item>
     </plurals>
 
@@ -17,7 +18,8 @@
     <string name="echo_queue_title_many">Y aún te queda bastante este año. Tienes</string>
     <plurals name="echo_queue_hours_waiting">
         <item quantity="one">hora esperando en tu cola\ndesde %1$d episodio</item>
-        <item quantity="many">horas esperando en tu cola\ndesde %1$d episodios</item>
+        <item quantity="many">hora esperando en tu cola\ndesde %1$d episodios</item>
+        <item quantity="other">horas esperando en tu cola\ndesde %1$d episodios</item>
     </plurals>
     <string name="echo_queue_hours_clean">Eso es alrededor de %1$s cada día hasta que comience %2$d</string>
     <string name="echo_queue_hours_normal">Eso son unas %1$s cada día hasta que empiece %2$d. Puedes empezar el año de cero si te saltas algunos episodios.</string>
