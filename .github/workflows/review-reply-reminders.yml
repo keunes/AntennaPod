@@ -18,14 +18,18 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'closed',
-              labels: 'Needs: Review reply'
+              labels: ['Needs: Review reply']
             });
 
-            for (const issue of issues) {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue.number,
-                body: 'A new release has been published!'
-              });
+            if (issues.length > 0) {
+              for (const issue of issues) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: 'A new release has been published!'
+                });
+              }
+            } else {
+              console.log('No closed issues with label "Needs: Review reply" found.');
             }
