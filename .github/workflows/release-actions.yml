@@ -1,15 +1,14 @@
-name: Comment on closed issues
+name: Release actions
 
 on:
   release:
     types: released
-  workflow_dispatch:
 
 jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - name: Comment on closed issues with specific label
+      - name: Tag review replyers in closed issues with 'Needs: Review reply' label
         uses: actions/github-script@v7
         with:
           script: |
@@ -27,7 +26,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issue.number,
-                  body: 'A new release has been published!'
+                  body: 'This feature or fix is now released! @AntennaPod/review-replyers, time to inform relevant reviews in Google Play console (please see links in one or more of the comments above).'
                 });
               }
             } else {
