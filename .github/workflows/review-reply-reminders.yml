@@ -1,0 +1,33 @@
+name: Comment on closed issues
+
+on:
+  release:
+    types: released
+  workflow_dispatch:
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on closed issues with specific label
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.your-token }}
+          script: |
+            const issue_number = context.issue.number;
+            const octokit = github.getOctokit(core.getInput('github-token'));
+            const { data: issues } = await octokit.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed',
+              labels: 'Needs: Review reply'
+            });
+
+            for (const issue of issues) {
+              await octokit.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: 'A new release has been published!'
+              });
+            }
