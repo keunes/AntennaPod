@@ -8,7 +8,7 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - name: Tag review replyers in closed issues with 'Needs: Review reply' label
+      - name: "Tag review replyers in closed issues with 'Needs: Review reply' label"
         uses: actions/github-script@v7
         with:
           script: |
