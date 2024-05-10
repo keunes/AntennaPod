@@ -15,4 +15,4 @@ jobs:
       - name: apply label
         uses: actions-ecosystem/action-add-labels@v1
         with:
-        labels: 'Needs: Review reply'
+          labels: 'Needs: Review reply'
